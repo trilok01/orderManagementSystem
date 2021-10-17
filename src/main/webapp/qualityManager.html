@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1"><title>Quality Manager</title>
+
+<style>
+
+	body{
+		margin: 0;
+		padding: 0;
+		background-image: url('images/qmbg.jpg');
+		background-repeat: no-repeat;
+		background-size: cover;
+		text-align: center;
+	}
+	
+	#logOut{
+		float: right;
+		margin-right: 10px;
+		margin-top: 10px;
+		padding: 10px 20px;
+		background-color: #000;
+		border: none;
+		color: white;
+		border-radius: 5px;
+	}
+
+	#logOut:hover{
+		cursor: pointer;
+		background-color: #434343;
+	}
+	
+	h1{
+		font-weight: bold;
+		color: white;
+		text-shadow: 2px 2px 4px #000000;
+		font-size: 80px;
+		font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+	}
+	
+	.button-container{
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 50px;
+		display: flex;
+		width: 80%;
+		height: 200px;
+	}
+	
+	.mgrbtn{
+		width: 24%;
+		height: 200px;
+		text-align: center;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	
+	button{
+		margin-top: 10px;
+		width:150px;
+	    height:150px;
+	    border-radius: 50%;
+	    background: transparent;
+	    color: white;
+	  	box-shadow: 12px 12px 16px 0 rgba(0, 0, 0, 1), -8px -8px 12px 0 rgba(255, 255, 255, 0.3);
+	   	background: linear-gradient(135deg, rgba(0,0,0,1), rgba(255,255,255,0.25));
+	    font-family: "Times New Roman", Times, serif;
+	    font-size: 20px;
+	    font-weight: bold;
+	}
+	
+	button:hover{
+		
+		color: black;
+		background: linear-gradient(-45deg, rgba(0,0,0,1), rgba(255,255,255,0.25));
+		cursor: pointer;
+	}
+
+	.managerForms{
+		display: none;
+		position: fixed;
+		z-index: 2;
+		left: 50%;
+		top: 50%;
+		width: 60%;
+		min-width: 335px;
+		height: 80%;
+		overflow: hidden;
+		transform: translate(-50%, -50%);
+		border-radius: 5px;
+		backdrop-filter: blur(8px);		
+		text-align: center;
+		border: 1px solid white;
+		background-color: #63d471;
+		background-image: linear-gradient(315deg, #63d471 0%, #233329 74%);
+	}
+	
+	.close{
+		position: absolute;
+		right: 10px;
+		font-size: 40px;
+		font-weight: bold;
+		color: #f1f1f1;
+	}
+
+	.close:hover{
+		cursor: pointer;
+	}
+
+	.managerFrame{
+		width: 100%;
+		height: 90%;
+		margin-top: 10%;
+	}
+
+	iframe{
+		overflow: hidden;
+	}
+	
+	#frameContainer{
+		display: none;
+		width: 100vw;
+		height: 100vh;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		position: absolute;
+		backdrop-filter: blur(8px);
+	}
+</style>
+
+<script>
+
+function myfunction(){
+	var url_string = window.location.href;
+	var url = new URL(url_string);
+	var e = url.searchParams.get("Id");
+	document.getElementById('orderFrame').src = 'QMOrderServlet';
+}
+
+function displayOrder(){
+	document.getElementById("viewOrder").style.display="block";
+	document.getElementById('frameContainer').style.display = "block";
+}
+</script>
+
+</head>
+<body onload = 'myfunction()'>
+
+	<button id = "logOut" style = "width: 120px; height: 50px;" onclick = "window.location.href='loginPage.html'">Log Out</button>
+	<br><br>
+	<h1>Quality Manager</h1>
+	
+	<!-- 
+	<div>
+		<IMG src="images/quality.jpg" width="35%" height="50%">
+		<hr>
+		<a href="QMOrderServlet"> View Orders</a> <br> <br>
+	</div>
+	 -->
+	
+	
+	<div class = "button-container">
+		<div class = "mgrbtn">
+			<button class = "dashboardButton" onclick = "displayOrder()">View Orders</button>
+		</div>
+	</div>
+	
+	<div id = "frameContainer">
+		<div id = "viewOrder" class = "managerForms wideContainer">
+			<span class = "close" onclick="document.getElementById('viewOrder').style.display = 'none'; document.getElementById('frameContainer').style.display = 'none'">&times;</span>
+			<br><br>
+			<h2>Order Details</h2>
+			<iframe id = "orderFrame" class = "managerFrame" src = "" frameborder = "0"></iframe>
+		</div>
+	</div>
+</body>
+</html>
+

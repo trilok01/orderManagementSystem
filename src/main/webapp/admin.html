@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+  <title>Admin Dashboard</title>
+ <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
+    <link rel="icon" href="static/tequed.png" />
+    
+    <script>
+    
+    function userTypeFunction(event) {
+		
+    	if (event.target.value === "emp") {
+    	    document.getElementById("mgr_id").readOnly = false;
+    	    document.getElementById("mgr_id").value = '';
+    	  }
+    	else if (event.target.value === "manager") {
+    	    document.getElementById("mgr_id").value = 0;
+    	    document.getElementById("mgr_id").readOnly = true;
+    	  }
+    	  else if (event.target.value === "admin") {
+    	    document.getElementById("mgr_id").value = 998;
+    	    document.getElementById("mgr_id").readOnly = true;
+    	  }
+    	  else if (event.target.value === "supplier") {
+    	    document.getElementById("mgr_id").value = 997;
+    	    document.getElementById("mgr_id").readOnly = true;
+    	  }
+    	  else if (event.target.value === "qm") {
+    	    document.getElementById("mgr_id").value = 999;
+    	    document.getElementById("mgr_id").readOnly = true;
+    	  }
+
+    	};
+    	
+		function myFunction(){
+			var url_string = window.location.href;
+			var url = new URL(url_string);
+			var e = url.searchParams.get("message");
+			document.getElementById("message").innerHTML = e;
+			document.getElementById('orderFrame').src = 'ViewServlet';
+			document.getElementById('supplierFrame').src = 'SupplierListServlet';
+		}
+		
+		function displayUsers(){
+			document.getElementById("viewUsers").style.display="block";
+			document.getElementById('frameContainer').style.display = "block";
+		}
+		
+		function displaySuppliers(){
+			document.getElementById("viewSuppliers").style.display="block";
+			document.getElementById('frameContainer').style.display = "block";
+		}
+    
+    </script>
+    
+</head>
+<body onload = "myFunction()">
+	<button id = "logOut" style = "width: 120px; height: 50px;" onclick = "window.location.href='loginPage.html'">Log Out</button>
+	<br><br>
+	<h1>Welcome Admin</h2>
+		
+	<p id = "message" style = "color: white;"></p>
+		
+	<div class="buttons ">
+		<div class="admin_btn">
+			<button onclick="document.getElementById('addUserForm').style.display = 'block'" class="animate__animated animate__bounceIn">Add User</a></button>
+		</div>
+				
+		<div class="admin_btn">
+			<button class="animate__animated animate__bounceIn" onclick = "displayUsers()">View User</button> <!-- <b> <a href="ViewServlet" style="color:white;"> -->
+		</div>
+		
+		<div class="admin_btn">
+			<button class="animate__animated animate__bounceIn" onclick = "displaySuppliers()">View Supplier</button> <!-- <b> <a href="ViewServlet" style="color:white;"> -->
+		</div>
+	</div>
+
+
+	<div id = "frameContainer">
+		<div id = "viewUsers" class = "managerForms wideContainer">
+			<span class = "close" onclick="document.getElementById('viewUsers').style.display = 'none'; document.getElementById('frameContainer').style.display = 'none'; document.getElementById('orderFrame').src = 'ViewServlet'">&times;</span>
+			
+			<iframe id = "orderFrame" class = "managerFrame" src = "" frameborder = "0"></iframe>
+		</div>
+		
+		<div id = "viewSuppliers" class = "managerForms wideContainer">
+			<span class = "close" onclick="document.getElementById('viewSuppliers').style.display = 'none'; document.getElementById('frameContainer').style.display = 'none'; document.getElementById('supplierFrame').src = 'SupplierListServlet'">&times;</span>
+			
+			<iframe id = "supplierFrame" class = "managerFrame" src = "" frameborder = "0"></iframe>
+		</div>
+	</div>
+	
+	
+	<div id = "addUserForm">
+		<span class = "close" onclick="document.getElementById('addUserForm').style.display='none'">&times;</span>
+		<br><br><br>
+		<form action="addUser.jsp" method="post">
+			
+			<label for = "userType">Designation:</label>
+			<select name = "desig" id = "userType" class = "formElements" onchange="userTypeFunction(event)" required>
+				<option selected disabled value = "">Select Designation</option>
+				<option value="emp">Employee</option>
+				<option value="manager">Manager</option>
+				<option value="supplier">Supplier</option>
+				<option value="qm">Quality Manager</option>
+				<option value="admin">Admin</option>
+			</select>
+			
+			<br><br>
+			<label for = "f_name">First Name</label>
+			<input type="text" name="f_name" placeholder="First Name" required />
+			<br><br>
+			<label for = "l_name">Last Name</label>
+			<input type = "text" name = "l_name" placeholder = "Last Name">
+			<br><br>
+			<label for = "email">Email Id</label>
+			<input type = "email" name = "email" placeholder = "Email Id" required>
+			<br><br>
+			<label for = "password">Password</label>
+			<input type = "text" name = "password" placeholder = "Password" required>
+			<br><br>
+			<label for = "mgr_id">Manager Id</label>
+			<input type = "number" id = "mgr_id" name = "mgr_id" placeholder = "Manager Id" required>
+			<br><br>
+			<input type = "submit" name = "submit" id = "submit" value = "Add">
+			
+		</form>
+	</div>
+</body>
+
+
+<style type="text/css">
+
+
+	.managerForms{
+		display: none;
+		position: fixed;
+		z-index: 2;
+		left: 50%;
+		top: 50%;
+		width: 60%;
+		min-width: 335px;
+		height: 80%;
+		overflow: hidden;
+		transform: translate(-50%, -50%);
+		border-radius: 5px;
+		backdrop-filter: blur(8px);		
+		text-align: center;
+		border: 1px solid white;
+		background-color: #63d471;
+		background-image: linear-gradient(315deg, #63d471 0%, #233329 74%);
+	}
+	
+	.close{
+		position: absolute;
+		right: 10px;
+		font-size: 40px;
+		font-weight: bold;
+		color: #f1f1f1;
+	}
+
+	.close:hover{
+		cursor: pointer;
+	}
+
+	.managerFrame{
+		width: 100%;
+		height: 90%;
+		margin-top: 10%;
+	}
+
+	iframe{
+		overflow: hidden;
+	}
+	
+	#frameContainer{
+		display: none;
+		width: 100vw;
+		height: 100vh;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		position: absolute;
+		backdrop-filter: blur(8px);
+	}
+
+	.color-gradient{
+		background: linear-gradient(to bottom,rgba(0,0,0,1.0) 15%,rgba(0,0,0,1.0) 20%,rgba(0,0,0,0.95) 30%,rgba(0,0,0,0.90) 40% , rgba(0,0,0,0.85) 45%,rgba(0,0,0,0.8) 50%,rgba(0,0,0,0.75) 55%,rgba(0,0,0,0.7) 60%,rgba(0,0,0,0.65) 65%,rgba(0,0,0,0.6) 70%,rgba(0,0,0,0.55) 75%,rgba(0,0,0,0.5) 80%,rgba(0,0,0,0.4) 85%,rgba(0,0,0,0.2) 90%,rgba(0,0,0,0.1) 95%,rgba(0,0,0,0.0) 100%);
+		width: 100%;
+		height:320px;
+		margin-top: 0%;
+		padding: 0px;
+		border-top:1px solid black;
+	}
+	
+	body{
+		margin:0%;
+		margin-top: 0%;
+		margin-left: 0%;
+		padding-top:0px;
+		color: white;
+		background-image: url('images/6.png');
+		background-position:40% 9%;
+		height: 100%;
+		background-size:cover;
+		animation: breath_af 40s linear 1;
+		text-align: center;
+	}
+	
+	#logOut{
+		float: right;
+		margin-right: 10px;
+		margin-top: 10px;
+		padding: 10px 20px;
+		background-color: #000;
+		border: none;
+		color: white;
+		border-radius: 5px;
+	}
+
+	#logOut:hover{
+		cursor: pointer;
+		background-color: #434343;
+	}
+	
+	h1{
+		font-weight: bold;
+		color: white;
+		text-shadow: 2px 2px 4px #000000;
+		font-size: 80px;
+		font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+	}
+	
+	@keyframes breath_af {
+		0% { background-size: 150% auto; }
+		18% { background-size:100% auto; }
+		80% { background-size: 110% auto; }
+		100% { background-size: 100% auto; }
+	}
+	
+	@keyframes button_work {
+		0% { background-size: 220% auto; }
+		50% { background-size:160% auto; }
+		100% { background-size: 100% auto; }
+	}
+	
+	.animate__bounceIn{
+		animation-delay: 1s;
+		--animate-duration:2s;
+	}
+	
+	.emp_type{
+		width: 19%;
+		height: 200px;
+		text-align: center;
+	}
+	
+	.first-hr{
+		width: 80%;
+		margin-left: auto;
+		margin-right: auto;
+		border:2px solid black;
+	}
+	
+	hr{
+		border:3px solid black;
+	}
+	
+	.second-head1{
+		font-size: 35px;
+	}
+	
+	button{
+		margin-top: 10px;
+		width:150px;
+		height:150px;
+		border-radius: 50%;
+		background: transparent;
+		color: white;
+		box-shadow: 12px 12px 16px 0 rgba(0, 0, 0, 1), -8px -8px 12px 0 rgba(255, 255, 255, 0.3);
+		background: linear-gradient(135deg, rgba(0,0,0,1), rgba(255,255,255,0.25));
+		font-family: "Times New Roman", Times, serif;
+		font-size: 20px;
+		font-weight: bold;
+	}
+	
+	button:hover{
+		color: black;
+		background: linear-gradient(-45deg, rgba(0,0,0,1), rgba(255,255,255,0.25));
+		cursor: pointer;
+	}
+	
+	.buttons{
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 100px;
+		display: flex;
+		width: 80%;
+		height: 200px;
+	}
+	
+	.admin_btn{
+			width: 33%;
+			height: 200px;
+			text-align: center;
+		}
+	
+	#addUserForm{
+		display: none;
+		background-color: #63d471;
+		background-image: linear-gradient(315deg, #63d471 0%, #233329 74%);
+		
+		position: absolute;
+		z-index: 9;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 30%;
+		text-align: center;
+		padding-bottom: 10px;
+	}
+	
+	.close{
+		position: absolute;
+		right: 10px;
+		font-size: 40px;
+		font-weight: bold;
+		color: #f1f1f1;
+	}
+	
+	.close:hover{
+		cursor: pointer;
+	}
+	
+	label{
+		display: inline-block;
+		width: 30%;
+		text-align: left;
+	}
+	
+	select{
+		height: 30px;
+		outline: none;
+		border-radius: 5px;
+	}
+	
+	select[option]{
+		height: 30px;
+		outline: none;
+		border-radius: 5px;
+	}
+	
+	input{
+		height: 30px;
+		outline: none;
+		border-radius: 5px;
+	}
+	
+	input:focus{
+			outline: none;
+			box-shadow: 0px 0px 10px skyblue;
+	}
+	
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+	  -webkit-appearance: none;
+	  margin: 0;
+	}
+	
+	/* Firefox */
+	input[type=number] {
+	  -moz-appearance: textfield;
+	}
+	
+	#submit{
+		background-color: #04AA6D;
+		width: 100px;
+		height: 40px;
+		border-radius: 3px;
+		border: none;
+		color: white;
+		font-weight: bold;
+		float: right;
+		margin-right: 5%;
+	}
+	
+	#submit:hover{
+		cursor: pointer;
+		background-color: #02774C;
+	}
+</style>
+
+<script>
+	function myfunction(){
+		var url_string = window.location.href;
+		var url = new URL(url_string);
+		var message = url.searchParams.get("message");
+		if(message){
+			document.getElementById("message").innerHTML = message;
+		}
+	}
+</script>
+</html>
